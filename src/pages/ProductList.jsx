@@ -8,18 +8,20 @@ import {
   TableBody,
   MenuItem,
   Icon,
-  Label,
   Menu,
   Table,
 } from "semantic-ui-react";
 import ProductService from "../services/productService";
-export default function ProductList() {
+import { Link } from "react-router-dom";
+
+
+function ProductList() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     let productService = new ProductService();
 
     productService.getProducts().then(result => setProducts(result.data.data))
-  });
+  },[]);
 
   return (
     <div>
@@ -37,8 +39,8 @@ export default function ProductList() {
         <TableBody>
           {products.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{product.productName}</TableCell>
-              <TableCell>{product.unitPrice}</TableCell>
+              <TableCell><Link to={`/products/${product.productName}`}>{product.productName}</Link></TableCell>
+              <TableCell>{product.unitPrice.toFixed(2)}</TableCell>
               <TableCell>{product.unitsInStock}</TableCell>
               <TableCell>{product.quantityPerUnit}</TableCell>
               <TableCell>{product.category.categoryName}</TableCell>
@@ -68,3 +70,4 @@ export default function ProductList() {
     </div>
   );
 }
+export default ProductList
