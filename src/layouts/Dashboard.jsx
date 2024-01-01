@@ -6,12 +6,12 @@ import { Route, Routes } from "react-router-dom";
 import ProductDetail from "../pages/ProductDetail";
 import { CartDetail } from "../pages/CartDetail";
 import { ToastContainer } from "react-toastify";
+import ProductAdd from "../pages/ProductAdd";
 
-
- function Dashboard() {
+function Dashboard() {
   return (
     <div>
-      <ToastContainer position="bottom-right"/>
+      <ToastContainer position="bottom-right" />
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
@@ -19,16 +19,16 @@ import { ToastContainer } from "react-toastify";
           </Grid.Column>
           <Grid.Column width={12}>
             <Routes>
-              <Route exact path="/" Component={ProductList}></Route>
-              <Route exact path="/products" Component={ProductList}></Route>
-              <Route  path="/products/:name" Component={ProductDetail}></Route>
-              <Route exact path="/cart" Component={CartDetail}></Route>
+              <Route exact path="/" element={<ProductList />} />
+              <Route exact path="/products" element={<ProductList />} />
+              <Route path="/products/:name" element={<ProductDetail />} />
+              <Route path="/cart" element={<CartDetail />} />
+              <Route path="/product/add" element={<ProductAdd />} />
             </Routes>
-            <ProductList />
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </div>
   );
 }
-export default Dashboard
+export default Dashboard;
