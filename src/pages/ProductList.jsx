@@ -10,18 +10,30 @@ import {
   Icon,
   Menu,
   Table,
+  Button,
 } from "semantic-ui-react";
 import ProductService from "../services/productService";
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/actions/cartActions";
+import {toast} from 'react-toastify'
 
 function ProductList() {
+  const dispatch = useDispatch();
+
   const [products, setProducts] = useState([]);
   useEffect(() => {
     let productService = new ProductService();
 
-    productService.getProducts().then(result => setProducts(result.data.data))
-  },[]);
+    productService
+      .getProducts()
+      .then((result) => setProducts(result.data.data));
+  }, []);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    toast.success(`${product.productName} sepete eklendi`)
+  };
 
   return (
     <div>
@@ -33,17 +45,27 @@ function ProductList() {
             <TableHeaderCell>Stok Adedi</TableHeaderCell>
             <TableHeaderCell>Açıklama</TableHeaderCell>
             <TableHeaderCell>Kategori</TableHeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {products.map((product) => (
             <TableRow key={product.id}>
-              <TableCell><Link to={`/products/${product.productName}`}>{product.productName}</Link></TableCell>
+              <TableCell>
+                <Link to={`/products/${product.productName}`}>
+                  {product.productName}
+                </Link>
+              </TableCell>
               <TableCell>{product.unitPrice.toFixed(2)}</TableCell>
               <TableCell>{product.unitsInStock}</TableCell>
               <TableCell>{product.quantityPerUnit}</TableCell>
               <TableCell>{product.category.categoryName}</TableCell>
+              <TableCell>
+                <Button onClick={() => handleAddToCart(product)}>
+                  Sepete Ekle
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -70,4 +92,4 @@ function ProductList() {
     </div>
   );
 }
-export default ProductList
+export default ProductList;
